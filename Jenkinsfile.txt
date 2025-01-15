@@ -1,0 +1,61 @@
+pipeline {
+    agent any
+
+    environment {
+        MSBUILD_PATH = "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\msbuild.exe"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                // Pull the latest code from GitHub
+                git branch: 'main', url: 'https://github.com/WaseemHajwane/dot-net.git'
+            }
+        }
+
+        stage('Restore Dependencies') {
+            steps {
+                // Navigate to the project directory and restore dependencies
+                dir('TestProject') {
+                    bat 'dotnet restore'
+                }
+            }
+        }
+
+        stage('Build Solution') {
+            steps {
+                // Build the solution
+                dir('TestProject') {
+                    bat 'dotnet build --configuration Release'
+                }
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                // Run tests if you have test projects
+                dir('TestProject') {
+                    bat 'dotnet test'
+                }
+            }
+        }
+
+        stage('Publish Artifacts') {
+            steps {
+                // Publish build output if required
+                dir('TestProject') {
+                    bat 'dotnet publish --configuration Release --output ../publish'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
