@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
@@ -22,8 +22,28 @@ pipeline {
         }
         stage('Test') {
             steps {
-                // Run tests (if applicable)
+                // Run tests
                 bat 'dotnet test'
+            }
+        }
+        stage('Publish') {
+            steps {
+                // Publish the application
+                bat 'dotnet publish --configuration Release --output "D:\\publish-output"'
+            }
+        }
+        stage('Deploy to IIS') {
+            steps {
+                // Stop IIS
+                bat 'iisreset /stop'
+
+                // Copy published files to IIS directory
+                bat '''
+                xcopy "D:\\publish-output" "D:\\demonetproject\\testproject\\bin\\release\\net8.0\\publish" /E /H /C /I /Y
+                '''
+
+                // Restart IIS
+                bat 'iisreset /start'
             }
         }
     }
