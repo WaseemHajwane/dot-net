@@ -1,0 +1,7 @@
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\TestProject.exe
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\appsettings.Development.json
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\appsettings.json
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\TestProject.dll
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\TestProject.deps.json
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\TestProject.runtimeconfig.json
+D:\DemoNetProject\TestProject\TestProject\obj\Release\net8.0\PubTmp\Out\TestProject.pdb
