@@ -22,22 +22,37 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                echo 'Stopping IIS...'
-                bat 'iisreset /stop'
-                
-                echo 'Publishing the application to the specified path...'
+                echo 'Publishing the application...'
+                bat 'dotnet publish TestProject/TestProject.sln --configuration Release --output ./publish'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
                 bat '''
-                dotnet publish TestProject/TestProject.sln --configuration Release --output D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish
+                docker build -t testproject:latest -f ./Dockerfile .
                 '''
-                echo 'Starting IIS...'
-                bat 'iisreset /start'
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                echo 'Stopping and removing existing container (if any)...'
+                bat '''
+                docker stop testproject || true
+                docker rm testproject || true
+                '''
+
+                echo 'Running the Docker container...'
+                bat '''
+                docker run -d --name testproject -p 8080:80 testproject:latest
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline executed successfully. Application is published to the IIS site directory.'
+            echo 'Pipeline executed successfully. Application is deployed using Docker.'
         }
         failure {
             echo 'Pipeline failed. Please check the logs.'
