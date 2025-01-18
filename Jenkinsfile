@@ -44,7 +44,7 @@ pipeline {
 
         echo 'Running the Docker container...'
         bat '''
-        docker run -d --name testproject -p 8080:80 testproject:latest
+        docker run -d --name testproject -p 8081:80 testproject:latest
         '''
     }
 }
