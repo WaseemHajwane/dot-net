@@ -22,10 +22,15 @@ pipeline {
         }
         stage('Publish') {
             steps {
+                echo 'Stopping IIS...'
+                bat 'iisreset /stop'
+                
                 echo 'Publishing the application to the specified path...'
                 bat '''
                 dotnet publish TestProject/TestProject.sln --configuration Release --output D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish
                 '''
+                echo 'Starting IIS...'
+                bat 'iisreset /start'
             }
         }
     }
