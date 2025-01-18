@@ -32,7 +32,7 @@ pipeline {
                 echo 'Deploying the application to IIS...'
                 bat '''
                 REM Clear existing site files
-                rmdir /S /Q "C:\\inetpub\\wwwroot\\YourAppFolder"
+                rmdir /S /Q "C:\\inetpub\\wwwroot"
                 
                 REM Copy published files to IIS site folder
                 xcopy /E /Y /I "D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish" "C:\\inetpub\\wwwroot\\YourAppFolder"
