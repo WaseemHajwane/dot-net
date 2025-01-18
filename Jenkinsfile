@@ -38,8 +38,8 @@ pipeline {
     steps {
         echo 'Stopping and removing existing container (if any)...'
         bat '''
-        docker stop testproject || echo Container not running.
-        docker rm testproject || echo Container not available to remove.
+        docker stop testproject || (echo Container not running. && exit 0)
+        docker rm testproject || (echo Container not available to remove. && exit 0)
         '''
 
         echo 'Running the Docker container...'
@@ -48,6 +48,7 @@ pipeline {
         '''
     }
 }
+
 
     }
 
