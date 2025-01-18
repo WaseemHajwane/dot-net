@@ -22,20 +22,9 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                echo 'Publishing the application to the existing path...'
-                bat 'dotnet publish TestProject/TestProject.sln 
-                --configuration Release --output D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish'
-            }
-        }
-        stage('Deploy to IIS') {
-            steps {
-                echo 'Deploying the application to IIS...'
+                echo 'Publishing the application to the specified path...'
                 bat '''
-                REM Clear existing site files
-                rmdir /S /Q "C:\\inetpub\\wwwroot"
-                
-                REM Copy published files to IIS site folder
-                xcopy /E /Y /I "D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish" "C:\\inetpub\\wwwroot\\YourAppFolder"
+                dotnet publish TestProject/TestProject.sln --configuration Release --output D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release\\net8.0\\publish
                 '''
             }
         }
@@ -43,10 +32,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully, application is deployed to IIS.'
+            echo 'Pipeline executed successfully. Application is published to the IIS site directory.'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
