@@ -34,20 +34,21 @@ pipeline {
                 '''
             }
         }
-        stage('Run Docker Container') {
-            steps {
-                echo 'Stopping and removing existing container (if any)...'
-                bat '''
-                docker stop testproject || true
-                docker rm testproject || true
-                '''
+      stage('Run Docker Container') {
+    steps {
+        echo 'Stopping and removing existing container (if any)...'
+        bat '''
+        docker stop testproject || echo Container not running.
+        docker rm testproject || echo Container not available to remove.
+        '''
 
-                echo 'Running the Docker container...'
-                bat '''
-                docker run -d --name testproject -p 8080:80 testproject:latest
-                '''
-            }
-        }
+        echo 'Running the Docker container...'
+        bat '''
+        docker run -d --name testproject -p 8080:80 testproject:latest
+        '''
+    }
+}
+
     }
 
     post {
