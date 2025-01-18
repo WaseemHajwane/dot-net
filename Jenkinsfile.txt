@@ -1,44 +1,33 @@
 pipeline {
     agent any
-    
+
     stages {
-        stage('Checkout') {
+        stage('Checkout Code') {
             steps {
-                // Pull the latest code from GitHub
-                git url: 'https://github.com/WaseemHajwane/dot-net.git', branch: 'main'
+                echo 'Checking out from GitHub...'
+                git branch: 'main', url: 'https://github.com/WaseemHajwane/dot-net.git'
             }
         }
-        stage('Restore') {
+        stage('Restore Dependencies') {
             steps {
-                // Restore .NET dependencies
-                bat 'dotnet restore'
+                echo 'Restoring dependencies...'
+                bat 'dotnet restore TestProject/TestProject.sln'
             }
         }
         stage('Build') {
             steps {
-                // Build the project
-                bat 'dotnet build --configuration Release'
+                echo 'Building the solution...'
+                bat 'dotnet build TestProject/TestProject.sln --configuration Release'
             }
         }
-        stage('Publish') {
-            steps {
-                // Publish the application
-                bat 'dotnet publish --configuration Release --output D:\\publish-output'
-            }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully.'
         }
-        stage('Deploy to IIS') {
-            steps {
-                // Stop IIS
-                bat 'iisreset /stop'
-
-                // Copy published files to IIS directory
-                bat '''
-                xcopy "D:\\publish-output\\*" "D:\\DemoNetProject\\TestProject\\TestProject\\bin\\Release" /E /H /C /I /Y
-                '''
-
-                // Start IIS
-                bat 'iisreset /start'
-            }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
