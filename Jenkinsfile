@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'Building Docker image...'
                 bat '''
-                cd /path/to/parent/of/TestProject
+                cd TestProject
                 docker build -t testproject:latest -f ./Dockerfile .
                 '''
             }
