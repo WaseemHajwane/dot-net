@@ -27,14 +27,14 @@ pipeline {
             }
         }
         stage('Build Docker Image') {
-            steps {
-                echo 'Building Docker image...'
-                bat '''
-                cd TestProject/TestProject
-                docker build -t testproject:latest -f ./Dockerfile .
-                '''
-            }
-        }
+    steps {
+        echo 'Building Docker image...'
+        bat '''
+        docker build -t testproject:latest -f TestProject/Dockerfile .
+        '''
+    }
+}
+
       stage('Run Docker Container') {
     steps {
         echo 'Stopping and removing existing container (if any)...'
